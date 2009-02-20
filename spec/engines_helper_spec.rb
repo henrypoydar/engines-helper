@@ -52,14 +52,14 @@ describe 'EnginesHelper' do
       end
       
       after :all do
-         FileUtils.rm_rf "#{@rails_root}/plugin_assets/#{@mock_plugin}"
+        FileUtils.rm_rf "#{@rails_root}/public/#{EnginesHelper.plugin_assets_directory}/#{@mock_plugin}"
       end
       
       it "should autoload assets" do
       
-        File.exist?("#{@rails_root}/public/plugin_assets/#{@mock_plugin}").should be_true
+        File.exist?("#{@rails_root}/public/#{EnginesHelper.plugin_assets_directory}/#{@mock_plugin}").should be_true
         @assets.each do |asset|
-          File.exist?("#{@rails_root}/public/plugin_assets/#{@mock_plugin}/#{asset}").should be_true
+          File.exist?("#{@rails_root}/public/#{EnginesHelper.plugin_assets_directory}/#{@mock_plugin}/#{asset}").should be_true
         end
       end
     
@@ -93,5 +93,29 @@ describe 'EnginesHelper' do
     end
     
   end
+  
+  describe 'asset helpers' do
+    include ActionView::Helpers
+    
+    describe '#image_tag' do
+      it "should use the plugin path when the :plugin option is set" do
+        image_tag( 'engines_helper_mock.png', :plugin => @mock_plugin ).should =~ /src="\/#{EnginesHelper.plugin_assets_directory}\/#{@mock_plugin}\/images\/engines_helper_mock.png/
+      end
+    end
+    
+    describe '#javascript_include_tag' do
+      it "should use the plugin path when the :plugin option is set" do
+        javascript_include_tag( 'engines_helper_mock', :plugin => @mock_plugin ).should =~ /src="\/#{EnginesHelper.plugin_assets_directory}\/#{@mock_plugin}\/javascripts\/engines_helper_mock.js/
+      end
+    end
+    
+    describe '#stylesheet_link_tag' do
+      it "should use the plugin path when the :plugin option is set" do
+        stylesheet_link_tag( 'engines_helper_mock', :plugin => @mock_plugin ).should =~ /href="\/#{EnginesHelper.plugin_assets_directory}\/#{@mock_plugin}\/stylesheets\/engines_helper_mock.css/
+      end
+    end
+
+  end
+  
   
 end

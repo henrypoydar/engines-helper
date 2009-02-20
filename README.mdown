@@ -30,10 +30,15 @@ This is the default behavior. On initialization, the contents of each plugin pub
     
 If you keep your assets within the Rails standards of /images, /stylesheets and /javascripts, then the following helper methods are available in the parent application:
 
+    image_tag( source, :plugin => 'plugin name' )
+    javascript_include_tag( source, :plugin => 'plugin name' )
+    stylesheet_link_tag( source, :plugin => 'plugin name' )
+
+The code for these Rails extensions is from the original engines plugin.
+
 *Note: you probably want to add public/plugin_assets to your .gitignore file*
 
-
-**1.) The assets are synced into the public directory on demand**
+**2.) The assets are synced into the public directory on demand**
 
 To use this method, turn autoloading off in environment.rb:
 
