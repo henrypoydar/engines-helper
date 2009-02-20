@@ -2,25 +2,33 @@
 
 A Rails 2.3+ plugin that provides database migrations and asset support for 'engine' type plugins. Based on the original 'Engines' plugin for Rails prior to version 2.3. (Rails 2.3+ currently supports the loading of the entire plugin/app directory and plugin/config/routes.rb file natively.)
 
+More information here: http://rails-engines.org/news/2009/02/02/engines-in-rails-2-3/
+
 ## Requirements
 
 * A Rails 2.3+ application
+* *nix environment with rsync
 
 ## Usage
 
 **Migrations**
 
-rake task
+Use the provided rake task to sync up all migrations in plugins/**/db/migrate with the parent application:
+
+    rake engines:sync:migrations
 
 **Asset management**
 
-Asset auto loading on (default)
+TODO: Asset auto loading on (default)
 
 
-Asset auto loading off 
+TODO: Asset auto loading off 
 
 Use the rake task
 
+## Notes
+
+Windows is not supported right now due to the dependency on rsync.
 
 ## Further development
 
