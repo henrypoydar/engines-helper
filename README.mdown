@@ -2,7 +2,7 @@
 
 A Rails 2.3+ plugin that provides database migrations and asset support for 'engine' type plugins. Based on the original 'Engines' plugin for Rails prior to version 2.3. (Rails 2.3+ currently supports the loading of the entire plugin/app directory and plugin/config/routes.rb file natively.)
 
-More information about engines in Rails 2.3 from James Adam: [http://rails-engines.org/news/2009/02/02/engines-in-rails-2-3/])(http://rails-engines.org/news/2009/02/02/engines-in-rails-2-3/)
+More information about engines in Rails 2.3 from James Adam: http://rails-engines.org/news/2009/02/02/engines-in-rails-2-3/
 
 ## Requirements
 
