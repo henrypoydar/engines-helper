@@ -1,0 +1,31 @@
+# Engines Helper
+
+A Rails 2.3+ plugin that provides database migrations and asset support for 'engine' type plugins. Based on the original 'Engines' plugin for Rails prior to version 2.3. (Rails 2.3+ currently supports the loading of the entire plugin/app directory and plugin/config/routes.rb file natively.)
+
+## Requirements
+
+* A Rails 2.3+ application
+
+## Usage
+
+**Migrations**
+
+rake task
+
+**Asset management**
+
+Asset auto loading on (default)
+
+
+Asset auto loading off 
+
+Use the rake task
+
+
+## Further development
+
+This plugin has been spec'd and tested using Rspec.  For spec runs and further development, an Rspec enabled Rails 2.3+ application is required.
+
+## License
+
+Copyright (c) 2009 Henry Poydar, released under the MIT license
