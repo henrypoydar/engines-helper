@@ -27,14 +27,21 @@ This is the default behavior. On initialization, the contents of each plugin pub
 
     public/plugins/<plugin name>/<public directories>
     
-If you keep your assets within the Rails standards of /images, /stylesheets and /javascripts, then the following helper methods are available in the parent application
-
-TODO: Asset auto loading on (default)
+If you keep your assets within the Rails standards of /images, /stylesheets and /javascripts, then the following helper methods are available in the parent application:
 
 
-TODO: Asset auto loading off 
+**1.) The assets are synced into the public directory on demand**
 
-Use the rake task
+To use this method, turn autoloading off in environment.rb:
+
+    EnginesHelper.autoload_assets = false
+    
+Then fire up the rake task when ever you need it to update the assets:
+
+    rake engines:sync:assets
+
+_Note: there is no namespace partitioning to this method. In other words, assets of the same name/path from different plugins will overwrite each other. Be careful._
+
 
 ## Notes
 
