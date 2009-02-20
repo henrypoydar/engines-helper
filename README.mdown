@@ -8,7 +8,7 @@ More information about engines in Rails 2.3 from James Adam: http://rails-engine
 
 * A Rails 2.3+ application
 * *nix environment with rsync
-* Engine-fied plugin(s), or plugins that have /app, /public and/or config/routes.rb paths
+* Engine-ified plugin(s), or plugins that have /app, /public and/or config/routes.rb paths
 
 ## Usage
 
