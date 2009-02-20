@@ -4,15 +4,16 @@ describe 'EnginesHelper' do
   
   # Setup a mock engines plugin
   before :all do
+    @mock_plugin = 'engines-helper-mock'
     @rails_root = File.dirname(__FILE__) + '/../../../..'
     FileUtils.cp_r(
       File.dirname(__FILE__) + '/mock_plugin', 
-      "#{@rails_root}/vendor/plugins/engine-helpers-mock")
+      "#{@rails_root}/vendor/plugins/#{@mock_plugin}")
   end
   
   # Teardown
   after :all do
-    FileUtils.rm_rf "#{@rails_root}/vendor/plugins/engine-helpers-mock"
+    FileUtils.rm_rf "#{@rails_root}/vendor/plugins/#{@mock_plugin}"
   end
   
   
@@ -39,27 +40,40 @@ describe 'EnginesHelper' do
   
   describe 'asset management' do
     
-
+    before :all do
+      @assets = %w(images/engines_helper_mock.png javascripts/engines_helper_mock.js stylesheets/engines_helper_mock.css)
+    end
+    
     describe 'with autoload_assets true' do
       
       before :each do
         EnginesHelper.autoload_assets = true
+        EnginesHelper::Assets.propagate
+      end
+      
+      after :all do
+         FileUtils.rm_rf "#{@rails_root}/plugin_assets/#{@mock_plugin}"
       end
       
       it "should autoload assets" do
-       
       
+        File.exist?("#{@rails_root}/public/plugin_assets/#{@mock_plugin}").should be_true
+        @assets.each do |asset|
+          File.exist?("#{@rails_root}/public/plugin_assets/#{@mock_plugin}/#{asset}").should be_true
+        end
       end
     
     end
     
     describe 'with autoload_assets false' do
       
+      # Force autoload_assets to false by sticking
+      # in a temporary initializer for this spec run
+      
       before :all do
         FileUtils.cp(
           File.dirname(__FILE__) + '/mock_initializers/autoload_assets_false.rb', 
           "#{@rails_root}/config/initializers/engines_helper_spec_run.rb")
-        @assets = %w(images/engine_helper_mock.png javascripts/engine_helper_mock.js stylesheets/engine_helper_mock.css)
       end
       
       after :all do

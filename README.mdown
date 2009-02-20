@@ -8,6 +8,7 @@ More information about engines in Rails 2.3 from James Adam: http://rails-engine
 
 * A Rails 2.3+ application
 * *nix environment with rsync
+* Engine-fied plugin(s), or plugins that have /app, /public and/or config/routes.rb paths
 
 ## Usage
 
@@ -25,9 +26,11 @@ There are two ways the plugin loads plugin assets into the parent application:
 
 This is the default behavior. On initialization, the contents of each plugin public directory is moved into a separate folder in the parent application:
 
-    public/plugins/<plugin name>/<public directories>
+    public/plugin_assets/<plugin name>/<public directories>
     
 If you keep your assets within the Rails standards of /images, /stylesheets and /javascripts, then the following helper methods are available in the parent application:
+
+*Note: you probably want to add public/plugin_assets to your .gitignore file*
 
 
 **1.) The assets are synced into the public directory on demand**
@@ -40,7 +43,7 @@ Then fire up the rake task when ever you need it to update the assets:
 
     rake engines:sync:assets
 
-_Note: there is no namespace partitioning to this method. In other words, assets of the same name/path from different plugins will overwrite each other. Be careful._
+*Note: there is no namespace partitioning to this method. In other words, assets of the same name/path from different plugins will overwrite each other. Be careful.*
 
 
 ## Notes

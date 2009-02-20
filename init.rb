@@ -1,1 +1,1 @@
-# Include hook code here
+EnginesHelper::Assets.propagate if EnginesHelper.autoload_assets
