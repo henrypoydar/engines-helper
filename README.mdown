@@ -11,13 +11,23 @@ More information about engines in Rails 2.3 from James Adam: http://rails-engine
 
 ## Usage
 
-**Migrations**
+### Migrations
 
 Use the provided rake task to sync up all migrations in plugins/**/db/migrate with the parent application:
 
     rake engines:sync:migrations
 
-**Asset management**
+### Asset management
+
+There are two ways the plugin loads plugin assets into the parent application:
+
+**1.) The assets are auto loaded into the public directory (default)**
+
+This is the default behavior. On initialization, the contents of each plugin public directory is moved into a separate folder in the parent application:
+
+    public/plugins/<plugin name>/<public directories>
+    
+If you keep your assets within the Rails standards of /images, /stylesheets and /javascripts, then the following helper methods are available in the parent application
 
 TODO: Asset auto loading on (default)
 
