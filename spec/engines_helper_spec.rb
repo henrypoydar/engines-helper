@@ -5,34 +5,37 @@ describe 'EnginesHelper' do
   # Setup a mock engines plugin
   before :all do
     @mock_plugin = 'engines-helper-mock'
-    @rails_root = File.dirname(__FILE__) + '/../../../..'
     FileUtils.cp_r(
       File.dirname(__FILE__) + '/mock_plugin', 
-      "#{@rails_root}/vendor/plugins/#{@mock_plugin}")
+      "#{RAILS_ROOT}/vendor/plugins/#{@mock_plugin}")
   end
   
   # Teardown
   after :all do
-    FileUtils.rm_rf "#{@rails_root}/vendor/plugins/#{@mock_plugin}"
+    FileUtils.rm_rf "#{RAILS_ROOT}/vendor/plugins/#{@mock_plugin}"
+    FileUtils.rm_rf "#{RAILS_ROOT}/public/#{EnginesHelper.plugin_assets_directory}"
   end
   
   
   describe 'migrations' do
     
-    before :each do
+    before :all do
       @migrations = Dir.glob(
-        "#{@rails_root}/vendor/plugins/engine-helpers-mock/db/migrate/[0-9]*_*.rb").map { |migration|
+        "#{RAILS_ROOT}/vendor/plugins/#{@mock_plugin}/db/migrate/[0-9]*_*.rb").map { |migration|
         File.basename(migration)
       }
     end
-
-    it "should sync up the migrations when the rake task is run" do
-      system "cd #{@rails_root} && rake engines:sync:migrations"
+    
+    after :all do
       @migrations.each do |migration|
-        File.exist?("#{@rails_root}/db/migrate/#{migration}").should be_true
+        FileUtils.rm_r "#{RAILS_ROOT}/db/migrate/#{migration}"
       end
+    end
+    
+    it "should sync up the migrations when the rake task is run" do
+      system "cd #{RAILS_ROOT} && rake engines:sync:migrations"
       @migrations.each do |migration|
-        FileUtils.rm_rf "#{@rails_root}/db/migrate/#{migration}"
+        File.exist?("#{RAILS_ROOT}/db/migrate/#{migration}").should be_true
       end
     end
     
@@ -46,20 +49,15 @@ describe 'EnginesHelper' do
     
     describe 'with autoload_assets true' do
       
-      before :each do
+      before :all do
         EnginesHelper.autoload_assets = true
         EnginesHelper::Assets.propagate
       end
       
-      after :all do
-        FileUtils.rm_rf "#{@rails_root}/public/#{EnginesHelper.plugin_assets_directory}/#{@mock_plugin}"
-      end
-      
       it "should autoload assets" do
-      
-        File.exist?("#{@rails_root}/public/#{EnginesHelper.plugin_assets_directory}/#{@mock_plugin}").should be_true
+        File.exist?("#{RAILS_ROOT}/public/#{EnginesHelper.plugin_assets_directory}/#{@mock_plugin}").should be_true
         @assets.each do |asset|
-          File.exist?("#{@rails_root}/public/#{EnginesHelper.plugin_assets_directory}/#{@mock_plugin}/#{asset}").should be_true
+          File.exist?("#{RAILS_ROOT}/public/#{EnginesHelper.plugin_assets_directory}/#{@mock_plugin}/#{asset}").should be_true
         end
       end
     
@@ -73,20 +71,20 @@ describe 'EnginesHelper' do
       before :all do
         FileUtils.cp(
           File.dirname(__FILE__) + '/mock_initializers/autoload_assets_false.rb', 
-          "#{@rails_root}/config/initializers/engines_helper_spec_run.rb")
+          "#{RAILS_ROOT}/config/initializers/engines_helper_spec_run.rb")
       end
       
       after :all do
-        FileUtils.rm_rf "#{@rails_root}/config/initializers/engines_helper_spec_run.rb"
+        FileUtils.rm_rf "#{RAILS_ROOT}/config/initializers/engines_helper_spec_run.rb"
         @assets.each do |asset|
-          FileUtils.rm_rf "#{@rails_root}/public/#{asset}"
+          FileUtils.rm_r "#{RAILS_ROOT}/public/#{asset}"
         end
       end
       
       it "should sync up the assets when the rake task is run" do
-        system "cd #{@rails_root} && rake engines:sync:assets"
+        system "cd #{RAILS_ROOT} && rake engines:sync:assets"
         @assets.each do |asset|
-          File.exist?("#{@rails_root}/public/#{asset}").should be_true
+          File.exist?("#{RAILS_ROOT}/public/#{asset}").should be_true
         end
       end
       
