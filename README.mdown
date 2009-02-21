@@ -62,4 +62,5 @@ This plugin has been spec'd and tested using Rspec.  For spec runs and further d
 ## License
 
 Copyright (c) 2009 Henry Poydar, released under the MIT license
+
 Portions copyright (c) James Adam
