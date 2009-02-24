@@ -33,7 +33,7 @@ describe 'EnginesHelper' do
     end
     
     it "should sync up the migrations when the rake task is run" do
-      system "cd #{RAILS_ROOT} && rake engines:sync:migrations"
+      system "cd #{RAILS_ROOT} && rake engines:sync:migrations PLUGINS=#{@mock_plugin} -s"
       @migrations.each do |migration|
         File.exist?("#{RAILS_ROOT}/db/migrate/#{migration}").should be_true
       end
@@ -82,7 +82,7 @@ describe 'EnginesHelper' do
       end
       
       it "should sync up the assets when the rake task is run" do
-        system "cd #{RAILS_ROOT} && rake engines:sync:assets"
+        system "cd #{RAILS_ROOT} && rake engines:sync:assets -s"
         @assets.each do |asset|
           File.exist?("#{RAILS_ROOT}/public/#{asset}").should be_true
         end
@@ -112,7 +112,7 @@ describe 'EnginesHelper' do
         stylesheet_link_tag( 'engines_helper_mock', :plugin => @mock_plugin ).should =~ /href="\/#{EnginesHelper.plugin_assets_directory}\/#{@mock_plugin}\/stylesheets\/engines_helper_mock.css/
       end
     end
-
+  
   end
   
   

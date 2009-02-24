@@ -4,19 +4,33 @@ namespace :engines do
     desc "Sync all plugin migrations to the parent application"
     task :migrations do
     
-      puts ""
-      puts "Syncing migrations ..."
-      puts ""
+      unless RAILS_ENV == 'test'
+        puts ""
+        puts "Syncing migrations ..."
+        puts ""
+      end
+      
       system "mkdir -p db/migrate"
-      Dir.glob(File.dirname(__FILE__) + '/../../*').each do |plugin|
+      
+      if ENV['PLUGINS'] 
+        plugin_list = ENV['PLUGINS'].split(',').map{ |n| File.dirname(__FILE__) + '/../../' + n.strip }
+      else
+        plugin_list = Dir.glob(File.dirname(__FILE__) + '/../../*')
+      end
+      
+      plugin_list.each do |plugin|
+        raise "Plugin #{plugin} does not exist" if !File.exist?(plugin)
         Dir.glob(plugin + '/db/migrate/[0-9]*_*.rb') do |migration|
-          puts "Syncing #{File.basename(plugin)} migration #{File.basename(migration)}"
+          puts "Syncing #{File.basename(plugin)} migration #{File.basename(migration)}" unless RAILS_ENV == 'test'
           system "rsync -u #{migration} db/migrate"
         end
       end
-      puts ""
-      puts "Sync complete. (You will still need to run the migrations.)"
-      puts ""
+      
+      unless RAILS_ENV == 'test'
+        puts ""
+        puts "Sync complete. (You will still need to run the migrations.)"
+        puts ""
+      end
   
     end
     
@@ -33,19 +47,25 @@ namespace :engines do
         exit
       end
     
-      puts ""
-      puts "Syncing assets ..."
-      puts ""
+      unless RAILS_ENV == 'test'
+        puts ""
+        puts "Syncing assets ..."
+        puts ""
+      end
+        
       system "mkdir -p public"
       Dir.glob(File.dirname(__FILE__) + '/../../*').each do |plugin|
         if File.exist?("#{plugin}/public")
-          puts "Syncing #{File.basename(plugin)} public folder"
+          puts "Syncing #{File.basename(plugin)} public folder" unless RAILS_ENV == 'test'
           system "rsync -ru #{plugin}/public ."
         end
       end
-      puts ""
-      puts "Sync complete."
-      puts ""
+      
+      unless RAILS_ENV == 'test'
+        puts ""
+        puts "Sync complete."
+        puts ""
+      end
   
     end
     
