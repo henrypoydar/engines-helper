@@ -12,12 +12,9 @@ module EnginesHelper::Assets
     end
   end
   
-  # Call this from environment.rb to port over sass directories too
-  # Must be called from environment.rb because it needs to run after all
-  # the plugins are initialized
   def update_sass_directories
     
-    if check_for_haml
+    if check_for_sass
       
       unless Sass::Plugin.options[:template_location].is_a?(Hash)
         Sass::Plugin.options[:template_location] = {
@@ -42,9 +39,8 @@ private
     }.map { |d| File.basename(d) }
   end
   
-  def check_for_haml
-    $LOAD_PATH.reject { |p| !(p =~ /\/haml/) }.size > 0 ? 
-      @haml_present = true : @haml_present = false 
+  def check_for_sass
+    defined?(Sass) && Sass.version[:major]*10 + Sass.version[:minor] >= 21
   end
 
 end

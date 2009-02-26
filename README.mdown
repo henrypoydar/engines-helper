@@ -37,13 +37,7 @@ If you keep your assets within the Rails standards of /images, /stylesheets and 
 The code for these Rails extensions is from the original engines plugin.
 
 If you are using the Haml gem or plugin and want to extend Sass to work with the
-stylesheets in your public folder, put this line in environment.rb:
-
-    EnginesHelper::Assets.update_sass_directories
-    
-(It needs to be there because all of the plugins need to be initialized first.)
-
-Haml 2.1.0+ is required for this to work
+stylesheets in your public folder, you must use Haml 2.1+.
 
 *Note: you probably want to add public/plugin_assets to your .gitignore file*
 
